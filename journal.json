@@ -1,27 +1,22 @@
 [
   {
-    "title": "Week 0: Community Bonding Period",
+    "title": "Week 0: Coding Period",
     "date": "May 17 - May 23, 2025",
     "whatIDid": {
       "type": "list",
       "items": [
-        "Ported six key visualizations from the old gallery to the new Animint5 syntax",
-        "Submitted PR #32 to the gallery repository",
-        "Fixed issues in the 44th and 38th visualizations",
-        "Addressed mentor feedback on the 58th visualization"
+        
       ]
     },
     "progress": {
       "type": "list",
       "items": [
-        "Asian Temperature Maps (#58)",
-        "African Bank paper visualization (#44)",
-        "Protein seq data unaligned visualization (#38)"
+        " jl"
       ]
     },
     "learnings": {
       "type": "text",
-      "content": "This week was extremely educational as I learned the intricacies of the Animint5 syntax and how to effectively collaborate with my mentor and the community."
+      "content": "This week was extremely educational as I learned the "
     }
   }
 ]
