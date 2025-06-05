@@ -1,5 +1,5 @@
 :root {
-  --bg-color: #ffffff; /* Slightly lighter dark background */
+  --bg-color: #121212; /* Slightly lighter dark background */
   --text-color: #f0f0f0;
   --primary-color: #00d4ff;
   --secondary-color: #b0b0b0;
@@ -21,7 +21,7 @@ body.light-mode {
 }
 
 body {
-  font-size: 15px; /* Slightly reduced base size */
+  font-size: 1rem; /* Slightly reduced base size */
   line-height: 1.7; /* Increased line spacing */
   letter-spacing: 0.2px;
   margin: 0;
@@ -131,7 +131,7 @@ body.sidebar-collapsed main {
    padding: 1.5rem;  
   line-height: 1.75;
   margin-bottom: 2rem;
-  border-radius: 12px;
+  border-radius: 9px;
   box-shadow: 0 4px 15px var(--shadow);
   animation: fadeIn 0.5s ease;
 }
