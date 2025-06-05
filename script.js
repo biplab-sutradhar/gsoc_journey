@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Sidebar toggle
   sidebarToggle.addEventListener('click', () => {
     sidebar.classList.toggle('collapsed');
-    body.classList.toggle('sidebar-collapsed');
+    // body.classList.toggle('sidebar-collapsed');
     body.classList.toggle('blurred'); // Toggles the blurred class
   });
 
@@ -38,7 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const navLink = document.createElement('a');
         navLink.href = `#week-${index}`;
         navLink.textContent = entry.title;
-        navLink.addEventListener('click', () => {
+        navLink.addEventListener('click', (event) => {
+          event.preventDefault(); // Prevent default anchor behavior
+
+          // Scroll to the corresponding journal entry
+          const targetEntry = document.getElementById(`week-${index}`);
+          targetEntry.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          // Temporarily change the background color
+          targetEntry.style.backgroundColor = 'rgba(0, 212, 255, 0.2)'; // Highlight color
+          setTimeout(() => {
+            targetEntry.style.backgroundColor = ''; // Reset background color after 2 seconds
+          }, 2000);
+
+          // Update active link styling
           document.querySelectorAll('#week-nav a').forEach(link => link.classList.remove('active'));
           navLink.classList.add('active');
         });
