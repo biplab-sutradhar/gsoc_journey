@@ -1,22 +1,28 @@
 [
   {
     "title": "Week 0: Coding Period",
-    "date": "May 17 - May 23, 2025",
+    "date": "June 2 - June 8, 2025",
     "whatIDid": {
       "type": "list",
       "items": [
-        
+        "Worked on [PR #139](https://github.com/animint/animint2/pull/139), where the idea is to define three new plot attributes inside `theme_animint`: `rowspan`, `colspan`, and `last_in_row`.",
+        "`rowspan=2` means the plot takes up two rows (default = 1).",
+        "`colspan=2` means the plot takes up two columns (default = 1).",
+        "`last_in_row=TRUE` means the plot ends a row (i.e., closes the HTML `<tr>` element, default = FALSE).",
+        "Raised [PR #204](https://github.com/animint/animint2/pull/204) to address an issue where `geom_raster` silently breaks the entire plot system. When the `geom_raste()` function is called, the following error is thrown:\n`Error in geom_raste(): ...`"
       ]
     },
     "progress": {
       "type": "list",
       "items": [
-        " some data"
+        "Explored how `theme_animint()` can control layout using HTML table structure.",
+        "Began implementing logic for layout rendering with rowspan/colspan support.",
+        "Identified root cause and proposed a fix for the `geom_raster` issue by improving error handling."
       ]
     },
     "learnings": {
       "type": "text",
-      "content": "This week was extremely educational as I learned the "
+      "content": "Learned how R theme settings control HTML table layouts and how bugs in `geom_raster` affect rendering in animint2."
     }
   }
 ]
