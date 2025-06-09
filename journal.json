@@ -5,11 +5,11 @@
     "whatIDid": {
       "type": "list",
       "items": [
-        "Worked on [PR #139](https://github.com/animint/animint2/pull/139), where the idea is to define three new plot attributes inside `theme_animint`: `rowspan`, `colspan`, and `last_in_row`.",
+        "Worked on <a href=\"https://github.com/animint/animint2/pull/139\">PR #139</a>, where the idea is to define three new plot attributes inside `theme_animint`: `rowspan`, `colspan`, and `last_in_row`.",
         "`rowspan=2` means the plot takes up two rows (default = 1).",
         "`colspan=2` means the plot takes up two columns (default = 1).",
         "`last_in_row=TRUE` means the plot ends a row (i.e., closes the HTML `<tr>` element, default = FALSE).",
-        "Raised [PR #204](https://github.com/animint/animint2/pull/204) to address an issue where `geom_raster` silently breaks the entire plot system. When the `geom_raste()` function is called, the following error is thrown:\n`Error in geom_raste(): ...`"
+        "Raised <a href=\"https://github.com/animint/animint2/pull/204\">PR #204</a> to address an issue where <code>geom_raster</code> silently breaks the entire plot system. When the <code>geom_raster()</code> function is called, the following error is thrown:<br><code>Error in geom_raster(): ...</code>"
       ]
     },
     "progress": {
