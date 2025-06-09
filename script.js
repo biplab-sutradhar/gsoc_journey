@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const contentDiv = document.createElement('div');
         contentDiv.className = 'content';
 
-        ['whatIDid', 'progress', 'learnings'].forEach(section => {
+        ['whatIDid', 'progress', 'learnings', 'nextWeekGoals'].forEach(section => {
           if (entry[section]) {
             const sectionTitle = document.createElement('h3');
             sectionTitle.textContent = section.charAt(0).toUpperCase() + section.slice(1).replace(/([A-Z])/g, ' $1');

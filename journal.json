@@ -23,6 +23,14 @@
     "learnings": {
       "type": "text",
       "content": "Learned how R theme settings control HTML table layouts and how bugs in `geom_raster` affect rendering in animint2."
+    },
+    "nextWeekGoals": {
+      "type": "list",
+      "items": [
+        "Continue refining the layout logic in https://github.com/animint/animint2/pull/139.",
+        "This I will work on https://github.com/animint/animint2/issues/143"
+         
+      ]
     }
   }
 ]
