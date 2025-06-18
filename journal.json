@@ -1,6 +1,6 @@
 [
   {
-    "title": "Week 0: Coding Period",
+    "title": "Week 1: Coding Period",
     "date": "June 2 - June 8, 2025",
     "whatIDid": {
       "type": "list",
@@ -32,5 +32,25 @@
          
       ]
     }
-  }
+  },
+   {
+    "title": "Week 2: Coding Period",
+    "date": "June 9 - June 15, 2025",
+    "whatIDid": {
+      "type": "list",
+      "items": [
+        "Continued work on [PR #139]",
+        "Porting visualization to animint/gallery"
+      ]
+    },
+    "progress": {
+      "type": "list",
+      "items": [
+        "Refined layout logic in https://github.com/animint/animint2/pull/139.",
+        "Successfully ported visualization to animint/gallery."
+      ]
+    }
+    
+    }
+  
 ]
