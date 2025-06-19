@@ -67,9 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
         title.textContent = entry.title;
 
         // Add toggle icon
-        const toggleIcon = document.createElement('span');
+        const toggleIcon = document.createElement('button');
         toggleIcon.textContent = '▼'; // Default collapsed icon
         toggleIcon.style.cursor = 'pointer';
+        // toggleIcon.style.border = "1px solid #ccc"; 
+        toggleIcon.style.backgroundColor = "transparent";
+        toggleIcon.style.padding = '0.2rem 0.5rem'; // Add padding for better appearance
+        toggleIcon.style.borderRadius = '4px'; // Rounded corners
         toggleIcon.style.marginLeft = '2rem'; // Add spacing
         toggleIcon.addEventListener('click', () => {
           entryDiv.classList.toggle('collapsed');
