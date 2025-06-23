@@ -38,7 +38,7 @@
     "whatIDid": {
       "type": "list",
       "items": [
-        "Continued work on [PR #139], improving visual layout handling within `theme_animint()`.",
+        "Continued work on  [PR #139](https://github.com/animint/animint2/pull/139), improving visual layout handling within `theme_animint()`.",
         "Initiated the process of porting demo visualizations to the https://github.com/animint/gallery, a central collection for community-contributed interactive plots."
       ]
     },
@@ -65,7 +65,7 @@
     "progress": {
       "type": "list",
       "items": [
-        "Opened https://github.com/animint/gallery/pull/34 and https://github.com/animint/gallery/pull/32 with complete visualizations and layout configurations for review and feedback.",
+        "Opened [PR #34](https://github.com/animint/gallery/pull/34) and [PR #32](https://github.com/animint/gallery/pull/32) with complete visualizations and layout configurations for review and feedback.",
         "Established a working structure for future visualization contributions to the gallery."
       ]
     }

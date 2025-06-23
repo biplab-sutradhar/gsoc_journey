@@ -232,3 +232,9 @@ body.blurred main {
 body.blurred #sidebar-toggle {
   pointer-events: auto; /* Allow interaction with the toggle button */
 }
+
+a:link {
+  color: rgb(107, 157, 251);
+  background-color: transparent;
+  text-decoration: none;
+}
