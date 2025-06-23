@@ -39,7 +39,7 @@
       "type": "list",
       "items": [
         "Continued work on  [PR #139](https://github.com/animint/animint2/pull/139), improving visual layout handling within `theme_animint()`.",
-        "Initiated the process of porting demo visualizations to the https://github.com/animint/gallery, a central collection for community-contributed interactive plots."
+        "Initiated the process of porting demo visualizations to the [Gallery](https://github.com/animint/gallery), a central collection for community-contributed interactive plots."
       ]
     },
     "progress": {
