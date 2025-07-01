@@ -78,13 +78,14 @@
       "items": [
         "Focused on migrating rselenium code to chromote.",
         "Continued refining the layout logic in [PR #139](https://github.com/animint/animint2/pull/139)."
-      ],
+      ]
+    },
     "progress": {
       "type": "list",
       "items": [
         "Learning about chromote testing, enhancing browser automation capabilities.",
         "Finalized the layout logic in [PR #139](https://github.com/animint/animint2/pull/139)."
-      ] 
+      ]
     }
-  }}
+  }
 ]
