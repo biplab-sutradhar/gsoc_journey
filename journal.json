@@ -69,5 +69,22 @@
         "Established a working structure for future visualization contributions to the gallery."
       ]
     }
-  }
+  },
+  {
+    "title": "Week 4: Coding Period",
+    "date": "June 23 - June 29, 2025",
+    "whatIDid": {
+      "type": "list",
+      "items": [
+        "Focused on migrating rselenium code to chromote.",
+        "Continued refining the layout logic in [PR #139](https://github.com/animint/animint2/pull/139)."
+      ],
+    "progress": {
+      "type": "list",
+      "items": [
+        "Learning about chromote testing, enhancing browser automation capabilities.",
+        "Finalized the layout logic in [PR #139](https://github.com/animint/animint2/pull/139)."
+      ] 
+    }
+  }}
 ]
