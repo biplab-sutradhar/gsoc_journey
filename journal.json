@@ -87,5 +87,24 @@
         "Finalized the layout logic in [PR #139](https://github.com/animint/animint2/pull/139)."
       ]
     }
+  },
+  {
+    "title": "Week 5: Coding Period",
+    "date": "June 30 - July 6, 2025",
+    "whatIDid": {
+      "type": "list",
+      "items": [
+        "Remove Geom Raster Pr merged [PR #204](https://github.com/animint/animint2/pull/204)",
+        "working on [PR #143](https://github.com/animint/animint2/issues/143) Migrate rselenium code to chromote"
+      ]
+    },
+    "progress": {
+      "type": "list",
+      "items": [
+        "Learning about chromote testing",
+        "Learning how shiny apps work with animint2",
+        "Learning how to convert rselenium code to chromote"
+      ]
+    }
   }
 ]
