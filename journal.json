@@ -105,6 +105,12 @@
         "Learning how shiny apps work with animint2",
         "Learning how to convert rselenium code to chromote"
       ]
+    },
+    "learnings": {
+      "type": "text",
+      "content": "Learned how to use chromote testing, how to run shiny application.This week it took lot time figure out those things and could not able to commit daily "
+
+      
     }
   }
 ]
