@@ -112,5 +112,29 @@
 
       
     }
+  },
+   {
+    "title": "Week 6: Coding Period",
+    "date": "July 7 - July 13, 2025",
+    "whatIDid": {
+      "type": "list",
+      "items": [
+        "Worked on Data viz with 206 selectors.",
+        "Worked on climate change temperature sensor stations visualization.",
+        "Continued work on PR for migration of RSelenium tests to chromote tests.",
+        "Updated code tests for chromote migration."
+      ]
+    },
+    "progress": {
+      "type": "list",
+      "items": [
+        "Faced edge cases that made progress complex and delayed.",
+        "Some functions became redundant after migration; spent time trying to reduce redundancy."
+      ]
+    },
+    "learnings": {
+      "type": "text",
+      "content": "Dealing with edge cases in writing visualization code and redundant functions."
+    }
   }
 ]
