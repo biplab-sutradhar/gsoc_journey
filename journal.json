@@ -136,5 +136,29 @@
       "type": "text",
       "content": "Dealing with edge cases in writing visualization code and redundant functions."
     }
+  },
+  {
+  "title": "Week 7: Coding Period",
+  "date": "July 14 - July 20, 2025",
+  "whatIDid": {
+    "type": "list",
+    "items": [
+      "Worked on : theme_animint(rowspan, colspan, last_in_row) [PR #153](https://github.com/animint/animint2/pull/153)",
+      "Updated code tests for chromote migration.",
+      "Worked on data visualization with 206 selectors."
+    ]
+  },
+  "progress": {
+    "type": "list",
+     "items": [
+      "Continued refining the layout logic in [PR #153](https://github.com/animint/animint2/pull/153)",
+      "Improved handling of colspan and rowspan interactions in multi-plot table rendering."
+    ]
+  },
+  "learnings": {
+    "type": "text",
+    "content": "Learned to use `last_in_row` to properly close HTML table rows, ensuring correct rendering of multi-plot layouts."
   }
+}
+
 ]
