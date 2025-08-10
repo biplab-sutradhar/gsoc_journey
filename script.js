@@ -85,7 +85,157 @@ async function loadContent(dataFile, contentType) {
     }
 }
 
-// Load journal entries with collapsible functionality
+// Enhanced content parsing with block-specific logic
+function formatContent(content, contentType = 'blog') {
+    if (typeof content !== 'string') return '<p>Invalid content format.</p>';
+    
+    // Different parsing logic based on content type
+    switch (contentType) {
+        case 'blog':
+            return formatBlogContent(content);
+        case 'journal':
+            return formatJournalContent(content);
+        default:
+            return formatBlogContent(content); // Default to blog formatting
+    }
+}
+
+// Blog-specific content formatting
+function formatBlogContent(content) {
+    return content
+        .split('\n\n')
+        .map(paragraph => {
+            if (paragraph.trim() === '') return '';
+            
+            // Handle headers with enhanced styling
+            if (paragraph.startsWith('### ')) {
+                const headerText = parseMarkdown(paragraph.substring(4));
+                return `<h3 class="blog-h3">${headerText}</h3>`;
+            }
+            if (paragraph.startsWith('## ')) {
+                const headerText = parseMarkdown(paragraph.substring(3));
+                return `<h2 class="blog-h2">${headerText}</h2>`;
+            }
+            if (paragraph.startsWith('# ')) {
+                const headerText = parseMarkdown(paragraph.substring(2));
+                return `<h1 class="blog-h1">${headerText}</h1>`;
+            }
+            
+            // Handle code blocks with language detection
+            if (paragraph.includes('```')) {
+                const codeMatch = paragraph.match(/```(\w+)?\n?([\s\S]*?)```/);
+                if (codeMatch) {
+                    const language = codeMatch[1] || 'text';
+                    const code = codeMatch[2];
+                    return `<div class="code-block">
+                        <div class="code-header">${language}</div>
+                        <pre><code class="language-${language}">${escapeHtml(code)}</code></pre>
+                    </div>`;
+                }
+            }
+            
+            // Handle numbered lists with step indicators
+            if (/^\d+\./.test(paragraph)) {
+                const items = paragraph.split(/\n\d+\.\s*/).filter(item => item.trim());
+                return `<ol class="blog-steps">${items.map((item, index) => 
+                    `<li class="step-item">
+                        <span class="step-number">${index + 1}</span>
+                        <div class="step-content">${parseMarkdown(item)}</div>
+                    </li>`
+                ).join('')}</ol>`;
+            }
+            
+            // Handle bullet lists
+            if (paragraph.includes('\n- ')) {
+                const items = paragraph.split('\n- ').filter(item => item.trim());
+                return `<ul class="blog-list">${items.map(item => 
+                    `<li class="blog-list-item">${parseMarkdown(item)}</li>`
+                ).join('')}</ul>`;
+            }
+            
+            // Handle special callout blocks
+            if (paragraph.startsWith('> ')) {
+                const calloutText = parseMarkdown(paragraph.substring(2));
+                return `<blockquote class="blog-callout">${calloutText}</blockquote>`;
+            }
+            
+            // Regular paragraphs
+            return `<p class="blog-paragraph">${parseMarkdown(paragraph)}</p>`;
+        })
+        .join('');
+}
+
+// Journal-specific content formatting (for structured weekly entries)
+function formatJournalContent(content) {
+    // This handles the structured journal format differently
+    return content
+        .split('\n\n')
+        .map(paragraph => {
+            if (paragraph.trim() === '') return '';
+            
+            // Journal headers are smaller and colored differently
+            if (paragraph.startsWith('### ')) {
+                return `<h3 class="journal-h3">${parseMarkdown(paragraph.substring(4))}</h3>`;
+            }
+            if (paragraph.startsWith('## ')) {
+                return `<h2 class="journal-h2">${parseMarkdown(paragraph.substring(3))}</h2>`;
+            }
+            
+            // Journal lists are more compact
+            if (paragraph.includes('\n- ')) {
+                const items = paragraph.split('\n- ').filter(item => item.trim());
+                return `<ul class="journal-list">${items.map(item => 
+                    `<li class="journal-list-item">${parseMarkdown(item)}</li>`
+                ).join('')}</ul>`;
+            }
+            
+            // Journal paragraphs
+            return `<p class="journal-paragraph">${parseMarkdown(paragraph)}</p>`;
+        })
+        .join('');
+}
+
+// Enhanced structured content formatter for journal entries
+function formatStructuredContent(contentObj, sectionType = 'default') {
+    if (contentObj && contentObj.type === 'list' && contentObj.items) {
+        const listClass = getListClassForSection(sectionType);
+        return `<ul class="${listClass}">${contentObj.items.map(item => 
+            `<li class="${listClass}-item">${parseMarkdown(item)}</li>`
+        ).join('')}</ul>`;
+    } else if (contentObj && contentObj.type === 'text' && contentObj.content) {
+        const paragraphClass = getParagraphClassForSection(sectionType);
+        return `<p class="${paragraphClass}">${parseMarkdown(contentObj.content)}</p>`;
+    } else if (typeof contentObj === 'string') {
+        const paragraphClass = getParagraphClassForSection(sectionType);
+        return `<p class="${paragraphClass}">${parseMarkdown(contentObj)}</p>`;
+    }
+    return '<p class="content-error">Content format not supported.</p>';
+}
+
+// Helper functions for section-specific styling
+function getListClassForSection(sectionType) {
+    const classMap = {
+        'whatIDid': 'journal-tasks-list',
+        'progress': 'journal-progress-list', 
+        'learnings': 'journal-learnings-list',
+        'nextWeekGoals': 'journal-goals-list',
+        'default': 'journal-list'
+    };
+    return classMap[sectionType] || classMap['default'];
+}
+
+function getParagraphClassForSection(sectionType) {
+    const classMap = {
+        'whatIDid': 'journal-tasks-text',
+        'progress': 'journal-progress-text',
+        'learnings': 'journal-learnings-text', 
+        'nextWeekGoals': 'journal-goals-text',
+        'default': 'journal-paragraph'
+    };
+    return classMap[sectionType] || classMap['default'];
+}
+
+// Updated journal entries loader with section-specific parsing
 function loadJournalEntries(entries, container) {
     const header = document.createElement('div');
     header.className = 'journal-header';
@@ -100,7 +250,6 @@ function loadJournalEntries(entries, container) {
         entryDiv.className = 'journal-entry collapsible-entry';
         entryDiv.id = `week-${index + 1}`;
         
-        // Create collapsible header
         const entryHeader = document.createElement('div');
         entryHeader.className = 'entry-header';
         entryHeader.innerHTML = `
@@ -109,31 +258,37 @@ function loadJournalEntries(entries, container) {
             <span class="expand-icon">▼</span>
         `;
         
-        // Create collapsible content
         const contentDiv = document.createElement('div');
         contentDiv.className = 'entry-content collapsed';
         
         let contentHtml = '';
         if (entry.whatIDid) {
-            contentHtml += '<h3>What I Did</h3>';
-            contentHtml += formatStructuredContent(entry.whatIDid);
+            contentHtml += '<div class="journal-section what-i-did">';
+            contentHtml += '<h3 class="section-header">What I Did</h3>';
+            contentHtml += formatStructuredContent(entry.whatIDid, 'whatIDid');
+            contentHtml += '</div>';
         }
         if (entry.progress) {
-            contentHtml += '<h3>Progress Made</h3>';
-            contentHtml += formatStructuredContent(entry.progress);
+            contentHtml += '<div class="journal-section progress-made">';
+            contentHtml += '<h3 class="section-header">Progress Made</h3>';
+            contentHtml += formatStructuredContent(entry.progress, 'progress');
+            contentHtml += '</div>';
         }
         if (entry.learnings) {
-            contentHtml += '<h3>Key Learnings</h3>';
-            contentHtml += formatStructuredContent(entry.learnings);
+            contentHtml += '<div class="journal-section key-learnings">';
+            contentHtml += '<h3 class="section-header">Key Learnings</h3>';
+            contentHtml += formatStructuredContent(entry.learnings, 'learnings');
+            contentHtml += '</div>';
         }
         if (entry.nextWeekGoals) {
-            contentHtml += '<h3>Next Week Goals</h3>';
-            contentHtml += formatStructuredContent(entry.nextWeekGoals);
+            contentHtml += '<div class="journal-section next-goals">';
+            contentHtml += '<h3 class="section-header">Next Week Goals</h3>';
+            contentHtml += formatStructuredContent(entry.nextWeekGoals, 'nextWeekGoals');
+            contentHtml += '</div>';
         }
         
         contentDiv.innerHTML = contentHtml;
         
-        // Add click handler for collapsible functionality
         entryHeader.addEventListener('click', function() {
             const isExpanded = !contentDiv.classList.contains('collapsed');
             contentDiv.classList.toggle('collapsed');
@@ -148,38 +303,45 @@ function loadJournalEntries(entries, container) {
     });
 }
 
-// Load blog collection with expandable titles
+// Updated blog collection loader with proper content formatting
 function loadBlogCollection(blogs, container) {
+    if (!blogs || !Array.isArray(blogs) || blogs.length === 0) {
+        container.innerHTML = '<div class="error-message">No blog posts available.</div>';
+        return;
+    }
+
     const header = document.createElement('div');
     header.className = 'blog-header';
-    header.innerHTML = `
-        <h1>Technical Blog</h1>
-        <p>My development experiences and technical insights</p>
-    `;
+    header.innerHTML = `<h1>Technical Blog</h1>
+                        <p>My development experiences and technical insights</p>`;
     container.appendChild(header);
-    
-    // Create blog list with titles only
+
     const blogList = document.createElement('div');
     blogList.className = 'blog-list-titles';
     
     blogs.forEach((blog, index) => {
+        if (!blog.title || !blog.content) {
+            console.warn(`Blog post ${index} is missing required fields`);
+            return;
+        }
+
         const blogTitle = document.createElement('div');
         blogTitle.className = 'blog-title-card';
-        blogTitle.innerHTML = `
-            <h2>${blog.title}</h2>
-            <p class="blog-preview">${blog.description}</p>
-            <span class="blog-date">${blog.date}</span>
-            <span class="expand-icon">▼</span>
-        `;
-        
-        // Create hidden content
+        blogTitle.innerHTML = `<h2>${escapeHtml(blog.title)}</h2>
+                               <div class="blog-preview">${escapeHtml(blog.description || 'No description available')}</div>
+                               <div class="blog-date">${escapeHtml(blog.date || 'No date')}</div>
+                               <span class="expand-icon">▼</span>`;
+
         const blogContent = document.createElement('div');
         blogContent.className = 'blog-full-content collapsed';
-        blogContent.innerHTML = `
-            <div class="blog-content">${formatContent(blog.content)}</div>
-        `;
         
-        // Add click handler
+        try {
+            blogContent.innerHTML = formatContent(blog.content, 'blog');
+        } catch (error) {
+            console.error(`Error formatting blog content for post ${index}:`, error);
+            blogContent.innerHTML = '<p class="error-message">Error loading content.</p>';
+        }
+
         blogTitle.addEventListener('click', function() {
             const isExpanded = !blogContent.classList.contains('collapsed');
             blogContent.classList.toggle('collapsed');
@@ -187,109 +349,53 @@ function loadBlogCollection(blogs, container) {
             icon.textContent = isExpanded ? '▼' : '▲';
             blogTitle.classList.toggle('expanded');
         });
-        
+
         blogList.appendChild(blogTitle);
         blogList.appendChild(blogContent);
     });
-    
+
     container.appendChild(blogList);
 }
 
-// Enhanced markdown parsing function - CORRECTED VERSION
+
+// Enhanced markdown parsing function with improved code block handling
 function parseMarkdown(text) {
     if (!text) return '';
     
-    // Process links [text](url) - FIXED REGEX
+    // First handle code blocks to prevent markdown parsing inside them
+    const codeBlocks = [];
+    text = text.replace(/```(\w+)?\n?([\s\S]*?)```/g, function(match, language, code) {
+        codeBlocks.push({language: language || 'text', code});
+        return `%%%CODEBLOCK${codeBlocks.length - 1}%%%`;
+    });
+    
+    // Process other markdown elements
     text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-    
-    // Process bold **text**
     text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-    
-    // Process italic *text*
     text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-    
-    // Process headers ### text
-    text = text.replace(/^###\s(.+)$/gm, '<h3>$1</h3>');
-    text = text.replace(/^##\s(.+)$/gm, '<h2>$1</h2>');
-    text = text.replace(/^#\s(.+)$/gm, '<h1>$1</h1>');
-    
-    // Process inline code `code`
+    text = text.replace(/~~([^~]+)~~/g, '<del>$1</del>');
     text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
     
-    // Process strikethrough ~~text~~
-    text = text.replace(/~~([^~]+)~~/g, '<del>$1</del>');
     
-    // Convert URLs to clickable links (for plain URLs not already in markdown links)
-    const urlRegex = /(^|[^"])(https?:\/\/[^\s\)]+)/g;
-    text = text.replace(urlRegex, '$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>');
+    // Convert URLs to links (for plain URLs not in markdown links)
+    text = text.replace(/(^|\s)(https?:\/\/[^\s\)]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>');
     
     // Convert email addresses
-    const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g;
-    text = text.replace(emailRegex, '<a href="mailto:$1">$1</a>');
+    text = text.replace(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g, '<a href="mailto:$1">$1</a>');
     
-    // Process line breaks
+    // Restore code blocks
+    text = text.replace(/%%%CODEBLOCK(\d+)%%%/g, function(match, index) {
+        const block = codeBlocks[index];
+        return `<div class="code-block">
+            <div class="code-header">${block.language}</div>
+            <pre><code class="language-${block.language}">${escapeHtml(block.code)}</code></pre>
+        </div>`;
+    });
+    
+    // Process line breaks (but preserve them in code blocks)
     text = text.replace(/\n/g, '<br>');
     
     return text;
-}
-
-// Format structured content (for journal)
-function formatStructuredContent(contentObj) {
-    if (contentObj && contentObj.type === 'list' && contentObj.items) {
-        return `<ul>${contentObj.items.map(item => `<li>${parseMarkdown(item)}</li>`).join('')}</ul>`;
-    } else if (contentObj && contentObj.type === 'text' && contentObj.content) {
-        return `<p>${parseMarkdown(contentObj.content)}</p>`;
-    } else if (typeof contentObj === 'string') {
-        return `<p>${parseMarkdown(contentObj)}</p>`;
-    }
-    return '<p>Content format not supported.</p>';
-}
-
-// Enhanced content formatting with proper markdown parsing
-function formatContent(content) {
-    if (typeof content !== 'string') return '<p>Invalid content format.</p>';
-    
-    return content
-        .split('\n\n')
-        .map(paragraph => {
-            if (paragraph.trim() === '') return '';
-            
-            // Handle headers (before markdown parsing to avoid conflicts)
-            if (paragraph.startsWith('### ')) {
-                return `<h3>${parseMarkdown(paragraph.substring(4))}</h3>`;
-            }
-            if (paragraph.startsWith('## ')) {
-                return `<h2>${parseMarkdown(paragraph.substring(3))}</h2>`;
-            }
-            if (paragraph.startsWith('# ')) {
-                return `<h1>${parseMarkdown(paragraph.substring(2))}</h1>`;
-            }
-            
-            // Handle code blocks (don't parse markdown inside code)
-            if (paragraph.includes('```')) {
-                const codeMatch = paragraph.match(/```(\w+)?\n?([\s\S]*?)```/);
-                if (codeMatch) {
-                    const language = codeMatch[1] || '';
-                    const code = codeMatch[2];
-                    return `<pre><code class="language-${language}">${escapeHtml(code)}</code></pre>`;
-                }
-            }
-            
-            // Handle lists
-            if (paragraph.includes('\n- ')) {
-                const items = paragraph.split('\n- ').filter(item => item.trim());
-                return `<ul>${items.map(item => `<li>${parseMarkdown(item)}</li>`).join('')}</ul>`;
-            }
-            
-            // Handle numbered lists
-            if (/^\d+\./.test(paragraph)) {
-                const items = paragraph.split(/\n\d+\.\s*/).filter(item => item.trim());
-                return `<ol>${items.map(item => `<li>${parseMarkdown(item)}</li>`).join('')}</ol>`;
-            }
-            
-            return `<p>${parseMarkdown(paragraph)}</p>`;
-        })
-        .join('');
 }
 
 // Escape HTML to prevent XSS
@@ -368,23 +474,6 @@ function printContent() {
     setTimeout(() => {
         window.print();
     }, 100);
-}
-
-// Export functions for external use if needed
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        loadHomepage,
-        loadContent,
-        loadJournalEntries,
-        loadBlogCollection,
-        parseMarkdown,
-        formatContent,
-        formatStructuredContent,
-        expandAllEntries,
-        collapseAllEntries,
-        searchContent,
-        printContent
-    };
 }
 
 // Initialize any additional functionality when DOM is ready

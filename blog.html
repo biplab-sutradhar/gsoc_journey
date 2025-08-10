@@ -13,22 +13,19 @@
     <header>
         <h1>Technical Blog</h1>
         <div class="nav-controls">
-            <a href="index.html" class="nav-home-btn"> Home</a>
+            <a href="index.html" class="nav-home-btn">← Home</a>
             <button id="theme-toggle" aria-label="Toggle theme">🌓</button>
         </div>
     </header>
     
     <div class="container">
         <main>
-            <!-- <div class="journal-controls">
-                <button class="control-btn" onclick="expandAllEntries()">Expand All</button>
-                <button class="control-btn" onclick="collapseAllEntries()">Collapse All</button>
-            </div> -->
             <div class="blog-container"></div>
         </main>
     </div>
     
-    <script src="script.js"></script>
+    <!-- Use the dedicated blog script -->
+    <script src="blog-script.js"></script>
     <script>
         // Theme toggle functionality
         document.getElementById('theme-toggle').addEventListener('click', function() {
