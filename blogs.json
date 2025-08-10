@@ -1,0 +1,16 @@
+[
+  {
+    "id": "blog",
+    "title": "Blog",
+    "description": "Technical blog posts about my development work and experiences.",
+    "file": "blogs/blog.json",
+    "type": "blog-collection"
+  },
+  {
+    "id": "journal", 
+    "title": "Weekly Journal",
+    "description": "10-week coding journal on animint2 development during GSoC 2025.",
+    "file": "blogs/gsoc2025.json",
+    "type": "journal"
+  }
+]
