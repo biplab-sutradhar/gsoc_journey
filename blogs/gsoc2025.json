@@ -6,7 +6,7 @@
       "type": "list",
       "items": [
         "Hey everyone, this week I dove right into improving the layout features in animint2. I opened [PR #139](https://github.com/animint/animint2/pull/139) where I added three new attributes to `theme_animint`: `rowspan`, `colspan`, and `last_in_row`. These make it way easier to create flexible grid layouts for multiple plots.",
-        "For example, setting `rowspan=2` lets a plot take up two rows instead of the default one, `colspan=2` spans it across two columns, and `last_in_row=TRUE` makes sure the plot closes off the current row in the HTML table—super handy for clean rendering!",
+        "For example, setting `rowspan=2` lets a plot take up two rows instead of the default one, `colspan=2` spans it across two columns, and `last_in_row=TRUE` makes sure the plot closes off the current row in the HTML table super handy for clean rendering!",
         "I also tackled a tricky bug with `geom_raster()` that was causing silent failures and messing up plot renders. I raised [PR #204](https://github.com/animint/animint2/pull/204) to fix it, adding better error reporting so developers get useful feedback instead of crashes."
       ]
     },
@@ -14,13 +14,13 @@
       "type": "list",
       "items": [
         "I spent time exploring how `theme_animint()` uses HTML tables to manage plot layouts, which was fascinating.",
-        "I started building the rendering logic to handle all sorts of rowspan and colspan combos—it's coming along nicely.",
+        "I started building the rendering logic to handle all sorts of rowspan and colspan combos it's coming along nicely.",
         "Figuring out the root cause of the `geom_raster` issue was a bit of a puzzle, but I implemented a solid error-handling fix to keep things stable."
       ]
     },
     "learnings": {
       "type": "text",
-      "content": "This week taught me a lot about how R's declarative themes can shape HTML visualizations. Debugging those silent failures in layered systems like animint2 was eye-opening—it really honed my problem-solving skills."
+      "content": "This week taught me a lot about how R's declarative themes can shape HTML visualizations. Debugging those silent failures in layered systems like animint2 was eye-opening it really honed my problem-solving skills."
     },
     "nextWeekGoals": {
       "type": "list",
@@ -43,7 +43,7 @@
     "progress": {
       "type": "list",
       "items": [
-        "I improved the logic for edge cases and complex colspan/rowspan mixes—testing them out felt rewarding as things started clicking into place.",
+        "I improved the logic for edge cases and complex colspan/rowspan mixes testing them out felt rewarding as things started clicking into place.",
         "Managed to port one key visualization to the gallery, and it renders perfectly with the new layouts. Excited to see more contributions there!"
       ]
     }
@@ -61,7 +61,7 @@
     "progress": {
       "type": "list",
       "items": [
-        "I opened [PR #34](https://github.com/animint/gallery/pull/34) and [PR #32](https://github.com/animint/gallery/pull/32) with full setups for review—hoping for some good feedback!",
+        "I opened [PR #34](https://github.com/animint/gallery/pull/34) and [PR #32](https://github.com/animint/gallery/pull/32) with full setups for review hoping for some good feedback!",
         "Set up a solid structure that should make future additions to the gallery smoother for everyone."
       ]
     }
@@ -79,8 +79,8 @@
     "progress": {
       "type": "list",
       "items": [
-        "I've been learning the ins and outs of chromote testing—it's powerful stuff for automation.",
-        "Finally wrapped up the layout logic in [PR #139](https://github.com/animint/animint2/pull/139)—feels great to have that solid."
+        "I've been learning the ins and outs of chromote testing it's powerful stuff for automation.",
+        "Finally wrapped up the layout logic in [PR #139](https://github.com/animint/animint2/pull/139) feels great to have that solid."
       ]
     }
   },
@@ -90,7 +90,7 @@
     "whatIDid": {
       "type": "list",
       "items": [
-        "Got [PR #204](https://github.com/animint/animint2/pull/204) merged to remove issues with Geom Raster—big win!",
+        "Got [PR #204](https://github.com/animint/animint2/pull/204) merged to remove issues with Geom Raster big win!",
         "Now tackling [Issue #143](https://github.com/animint/animint2/issues/143) by migrating rselenium code to chromote."
       ]
     },
@@ -98,13 +98,13 @@
       "type": "list",
       "items": [
         "Diving deep into chromote testing and how it integrates.",
-        "Explored how Shiny apps play with animint2—lots of connections to make.",
+        "Explored how Shiny apps play with animint2 lots of connections to make.",
         "Figuring out the conversion from rselenium to chromote has been a hands-on learning curve."
       ]
     },
     "learnings": {
       "type": "text",
-      "content": "This week was intense—I learned to use chromote for testing and how to run Shiny apps effectively. It took a while to sort everything out, so I couldn't commit daily, but the progress feels real and valuable."
+      "content": "This week was intense I learned to use chromote for testing and how to run Shiny apps effectively. It took a while to sort everything out, so I couldn't commit daily, but the progress feels real and valuable."
     }
   },
   {
@@ -113,7 +113,7 @@
     "whatIDid": {
       "type": "list",
       "items": [
-        "I worked on the Data viz with 206 selectors visualization—challenging but fun.",
+        "I worked on the Data viz with 206 selectors visualization challenging but fun.",
         "Also tackled the climate change temperature sensor stations viz.",
         "Kept pushing the PR for migrating RSelenium tests to chromote.",
         "Updated various code tests as part of the migration."
@@ -145,13 +145,13 @@
     "progress": {
       "type": "list",
       "items": [
-        "Kept refining the layout logic in [PR #153](https://github.com/animint/animint2/pull/153)—it's getting more robust.",
+        "Kept refining the layout logic in [PR #153](https://github.com/animint/animint2/pull/153) it's getting more robust.",
         "Improved how colspan and rowspan interact in multi-plot tables, making renders smoother."
       ]
     },
     "learnings": {
       "type": "text",
-      "content": "I really got the hang of using `last_in_row` to close HTML table rows properly—it's key for flawless multi-plot layouts."
+      "content": "I really got the hang of using `last_in_row` to close HTML table rows properly it's key for flawless multi-plot layouts."
     }
   },
   {
@@ -160,14 +160,14 @@
     "whatIDid": {
       "type": "list",
       "items": [
-        "Cleaned up redundant functions after the chromote migration—streamlining things.",
+        "Cleaned up redundant functions after the chromote migration streamlining things.",
         "Added test cases for theme_animint(rowspan, colspan, last_in_row) in [PR #153](https://github.com/animint/animint2/pull/153)."
       ]
     },
     "progress": {
       "type": "list",
       "items": [
-        "Got two visualizations merged into the gallery: figure-candidates-interactive and data-viz-with-206-selectors—awesome to see them live!",
+        "Got two visualizations merged into the gallery: figure-candidates-interactive and data-viz-with-206-selectors awesome to see them live!",
         "The new test cases for theme_animint are in place, ensuring everything works as expected."
       ]
     }
@@ -186,7 +186,7 @@
     "progress": {
       "type": "list",
       "items": [
-        "Successfully merged [PR #34](https://github.com/animint/gallery/pull/34) for the Climate change sensor stations viz—it's now part of the gallery!"
+        "Successfully merged [PR #34](https://github.com/animint/gallery/pull/34) for the Climate change sensor stations viz it's now part of the gallery!"
       ]
     }
   },
@@ -197,7 +197,7 @@
       "type": "list",
       "items": [
         "Started on new [Issue #213](https://github.com/animint/animint2/issues/213) to add error messages for unrecognized geom parameters.",
-        "Running into issues with The World Bank visualization breaking—trying to figure out how layout changes in [PR #153](https://github.com/animint/animint2/pull/153) are causing it."
+        "Running into issues with The World Bank visualization breaking trying to figure out how layout changes in [PR #153](https://github.com/animint/animint2/pull/153) are causing it."
       ]
     },
     "progress": {

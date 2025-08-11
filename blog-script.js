@@ -1,263 +1,141 @@
-// blog-script.js - Dedicated script for blog.html
+// blog-script.js - Simple blog functionality
 document.addEventListener('DOMContentLoaded', function() {
     const blogContainer = document.querySelector('.blog-container');
     
-    // Get data file from URL parameters
+    // Get parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
     const dataFile = urlParams.get('data');
+    const postId = urlParams.get('post');
     
     if (dataFile && blogContainer) {
-        loadBlogPosts(dataFile);
+        if (postId) {
+            loadIndividualPost(dataFile, postId);
+        } else {
+            loadBlogTitles(dataFile);
+        }
     } else {
-        console.error('No data file specified or blog container not found');
+        console.error('Blog data not found');
     }
 });
 
-// Load and display blog posts
-async function loadBlogPosts(dataFile) {
+// Load all blog titles
+async function loadBlogTitles(dataFile) {
     try {
         const response = await fetch(dataFile);
         const blogPosts = await response.json();
         
-        console.log('Loaded blog posts:', blogPosts);
-        
         const container = document.querySelector('.blog-container');
-        container.innerHTML = '';
-        
-        // Create header
-        const header = document.createElement('div');
-        header.className = 'blog-header';
-        header.innerHTML = `
-            <h1>Technical Blog</h1>
-            <p>My development experiences and technical insights</p>
+        container.innerHTML = `
+            <div class="blog-header">
+                <h1>Blog Posts</h1>
+                <p>My development experiences and insights</p>
+               
+            </div>
         `;
-        container.appendChild(header);
         
-        // Create controls
-        const controls = document.createElement('div');
-        controls.className = 'blog-controls';
-        // controls.innerHTML = `
-        //     <button class="control-btn" onclick="expandAllPosts()">Expand All</button>
-        //     <button class="control-btn" onclick="collapseAllPosts()">Collapse All</button>
-        // `;
-        container.appendChild(controls);
+        const blogList = document.createElement('div');
+        blogList.className = 'blog-list-titles';
         
-        // Create blog posts container
-        const postsContainer = document.createElement('div');
-        postsContainer.className = 'blog-posts-container';
-        
-        // Process each blog post
-        blogPosts.forEach((post, index) => {
-            const postElement = createBlogPost(post, index);
-            postsContainer.appendChild(postElement);
+        blogPosts.forEach(post => {
+            const blogCard = document.createElement('div');
+            blogCard.className = 'blog-title-card';
+            blogCard.onclick = () => {
+                window.location.href = `blog.html?data=${dataFile}&post=${post.id}`;
+            };
+            
+            blogCard.innerHTML = `
+                <h2>${post.title}</h2>
+                <div class="blog-date">${post.date}</div>
+                <div class="blog-preview">${post.description}</div>
+            `;
+            
+            blogList.appendChild(blogCard);
         });
         
-        container.appendChild(postsContainer);
+        container.appendChild(blogList);
         
     } catch (error) {
         console.error('Error loading blog posts:', error);
         document.querySelector('.blog-container').innerHTML = 
-            '<p class="error-message">Error loading blog posts.</p>';
+            '<div class="error-message">Error loading blog posts.</div>';
     }
 }
 
-// Create individual blog post element
-function createBlogPost(post, index) {
-    const postWrapper = document.createElement('div');
-    postWrapper.className = 'blog-post-wrapper';
-    
-    // Create collapsible header
-    const postHeader = document.createElement('div');
-    postHeader.className = 'blog-post-header';
-    postHeader.innerHTML = `
-        <h2 class="post-title">${post.title}</h2>
-        <div class="post-meta">
-            <span class="post-date">${post.date}</span>
-        </div>
-        <p class="post-description">${post.description}</p>
-        <span class="expand-icon">▼</span>
-    `;
-    
-    // Create collapsible content
-    const postContent = document.createElement('div');
-    postContent.className = 'blog-post-content collapsed';
-    postContent.innerHTML = `
-        <div class="post-content-inner">
-            ${parseMarkdownContent(post.content)}
-        </div>
-    `;
-    
-    // Add click handler for expand/collapse
-    postHeader.addEventListener('click', function() {
-        togglePost(postContent, postHeader);
-    });
-    
-    postWrapper.appendChild(postHeader);
-    postWrapper.appendChild(postContent);
-    
-    return postWrapper;
-}
-
-// Toggle individual post
-function togglePost(contentElement, headerElement) {
-    const isCollapsed = contentElement.classList.contains('collapsed');
-    const icon = headerElement.querySelector('.expand-icon');
-    
-    if (isCollapsed) {
-        contentElement.classList.remove('collapsed');
-        icon.textContent = '▲';
-        headerElement.classList.add('expanded');
-    } else {
-        contentElement.classList.add('collapsed');
-        icon.textContent = '▼';
-        headerElement.classList.remove('expanded');
+// Load individual blog post
+async function loadIndividualPost(dataFile, postId) {
+    try {
+        const response = await fetch(dataFile);
+        const blogPosts = await response.json();
+        
+        const post = blogPosts.find(p => p.id == postId);
+        if (!post) {
+            throw new Error('Blog post not found');
+        }
+        
+        const container = document.querySelector('.blog-container');
+        container.innerHTML = `
+            <div class="blog-navigation">
+                <button class="nav-home-btn" onclick="window.location.href='blog.html?data=${dataFile}'">← Back to Blog</button>
+               
+            </div>
+            
+            <div class="blog-post-header-single">
+                <h1>${post.title}</h1>
+                <div class="blog-date">${post.date}</div>
+                <div class="blog-description">${post.description}</div>
+            </div>
+            
+            <div class="blog-post-content-single">
+                ${formatContent(post.content)}
+            </div>
+        `;
+        
+    } catch (error) {
+        console.error('Error loading blog post:', error);
+        document.querySelector('.blog-container').innerHTML = 
+            '<div class="error-message">Blog post not found.</div>';
     }
 }
 
-// Parse markdown content with proper formatting
-function parseMarkdownContent(content) {
+// Simple content formatting - only handles basic markdown
+function formatContent(content) {
     if (!content) return '<p>No content available.</p>';
     
-    // Split content into paragraphs
+    // Split into paragraphs
     const paragraphs = content.split('\n\n');
-    let htmlContent = '';
+    let html = '';
     
     paragraphs.forEach(paragraph => {
         if (paragraph.trim() === '') return;
         
         // Handle headers
         if (paragraph.startsWith('### ')) {
-            const headerText = parseInlineMarkdown(paragraph.substring(4));
-            htmlContent += `<h3 class="content-h3">${headerText}</h3>`;
-        }
-        else if (paragraph.startsWith('## ')) {
-            const headerText = parseInlineMarkdown(paragraph.substring(3));
-            htmlContent += `<h2 class="content-h2">${headerText}</h2>`;
-        }
-        else if (paragraph.startsWith('# ')) {
-            const headerText = parseInlineMarkdown(paragraph.substring(2));
-            htmlContent += `<h1 class="content-h1">${headerText}</h1>`;
-        }
-        // Handle numbered lists
-        else if (/^\d+\./.test(paragraph)) {
-            const listItems = paragraph.split(/\n\d+\.\s*/);
-            const firstItem = listItems.shift(); // Remove empty first item
-            htmlContent += '<ol class="content-ordered-list">';
-            if (firstItem && firstItem.trim()) {
-                htmlContent += `<li>${parseInlineMarkdown(firstItem)}</li>`;
-            }
-            listItems.forEach(item => {
-                if (item.trim()) {
-                    htmlContent += `<li>${parseInlineMarkdown(item)}</li>`;
-                }
-            });
-            htmlContent += '</ol>';
-        }
-        // Handle bullet lists
-        else if (paragraph.includes('\n- ')) {
-            const listItems = paragraph.split('\n- ');
-            htmlContent += '<ul class="content-bullet-list">';
-            listItems.forEach(item => {
-                if (item.trim()) {
-                    // Remove leading dash if present
-                    const cleanItem = item.replace(/^-\s*/, '').trim();
-                    if (cleanItem) {
-                        htmlContent += `<li>${parseInlineMarkdown(cleanItem)}</li>`;
-                    }
-                }
-            });
-            htmlContent += '</ul>';
-        }
-        // Handle code blocks
-        else if (paragraph.includes('```')) {
-            const codeMatch = paragraph.match(/```(\w+)?\n?([\s\S]*?)```/);
-            if (codeMatch) {
-                const language = codeMatch[1] || 'text';
-                const code = codeMatch[2];
-                htmlContent += `
-                    <div class="code-block">
-                        <div class="code-header">${language}</div>
-                        <pre><code>${escapeHtml(code)}</code></pre>
-                    </div>
-                `;
-            } else {
-                htmlContent += `<p class="content-paragraph">${parseInlineMarkdown(paragraph)}</p>`;
-            }
-        }
-        // Regular paragraphs
-        else {
-            htmlContent += `<p class="content-paragraph">${parseInlineMarkdown(paragraph)}</p>`;
+            html += `<h3>${parseSimpleMarkdown(paragraph.substring(4))}</h3>`;
+        } else if (paragraph.startsWith('## ')) {
+            html += `<h2>${parseSimpleMarkdown(paragraph.substring(3))}</h2>`;
+        } else if (paragraph.startsWith('# ')) {
+            html += `<h1>${parseSimpleMarkdown(paragraph.substring(2))}</h1>`;
+        } else {
+            // Regular paragraph
+            html += `<p>${parseSimpleMarkdown(paragraph)}</p>`;
         }
     });
     
-    return htmlContent;
+    return html;
 }
 
-// Parse inline markdown (links, bold, italic, code)
-function parseInlineMarkdown(text) {
+// Simple markdown parser - only bold and links
+function parseSimpleMarkdown(text) {
     if (!text) return '';
     
     // Handle links [text](url)
-    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="content-link">$1</a>');
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
     
     // Handle bold **text**
-    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong class="content-bold">$1</strong>');
-    
-    // Handle italic *text*
-    text = text.replace(/\*([^*]+)\*/g, '<em class="content-italic">$1</em>');
-    
-    // Handle inline code `code`
-    text = text.replace(/`([^`]+)`/g, '<code class="content-code">$1</code>');
-    
-    // Handle plain URLs
-    text = text.replace(/(^|[^"])(https?:\/\/[^\s$$]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer" class="content-link">$2</a>');
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     
     // Handle line breaks
     text = text.replace(/\n/g, '<br>');
     
     return text;
 }
-
-// Escape HTML to prevent XSS
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-// Control functions
-function expandAllPosts() {
-    document.querySelectorAll('.blog-post-content.collapsed').forEach(content => {
-        content.classList.remove('collapsed');
-    });
-    document.querySelectorAll('.expand-icon').forEach(icon => {
-        icon.textContent = '▲';
-    });
-    document.querySelectorAll('.blog-post-header').forEach(header => {
-        header.classList.add('expanded');
-    });
-}
-
-function collapseAllPosts() {
-    document.querySelectorAll('.blog-post-content').forEach(content => {
-        content.classList.add('collapsed');
-    });
-    document.querySelectorAll('.expand-icon').forEach(icon => {
-        icon.textContent = '▼';
-    });
-    document.querySelectorAll('.blog-post-header').forEach(header => {
-        header.classList.remove('expanded');
-    });
-}
-
-// Optional: Add keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
-        e.preventDefault();
-        expandAllPosts();
-    }
-    if ((e.ctrlKey || e.metaKey) && e.key === 'c' && window.getSelection().toString() === '') {
-        e.preventDefault();
-        collapseAllPosts();
-    }
-});
