@@ -206,5 +206,22 @@
         "In [PR #215](https://github.com/animint/animint2/pull/215), I added the validateShowSelectedParams function, called in getLayerParams, to catch and prevent errors from bad geom params."
       ]
     }
+  },
+  {
+    "title": "Week 11: Coding Period",
+    "date": "August 11 - August 17, 2025",
+    "whatIDid": {
+      "type": "list",
+      "items": [
+        "Facing issue with coverage in [PR #209](https://github.com/animint/animint2/pull/209): `No valid coverage data was processed Error: Process completed with exit code 1`.",
+        "Encountered issues with layout changes in [PR #153](https://github.com/animint/animint2/pull/153), where The World Bank visualization code is breaking due to those changes."
+      ]
+    },
+    "progress": {
+      "type": "list",
+      "items": [
+        "Successfully merged [PR #215](https://github.com/animint/animint2/pull/215), which added a `error_for_showSelected_variants` function to catch errors from bad geom parameters."
+      ]
+    }
   }
 ]
