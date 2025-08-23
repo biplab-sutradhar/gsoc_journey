@@ -3,7 +3,7 @@
     "id": "blog",
     "title": "Blog",
     "description": "Technical blog posts about my development work and experiences.",
-    "file": "blogs/blog.json",
+    "file": "blogs/",
     "type": "blog-collection"
   },
   {
