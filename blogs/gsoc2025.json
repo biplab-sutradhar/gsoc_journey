@@ -223,5 +223,41 @@
         "Successfully merged [PR #215](https://github.com/animint/animint2/pull/215), which added a `error_for_showSelected_variants` function to catch errors from bad geom parameters."
       ]
     }
+  },
+  {
+  "title": "Week 11: Coding Period",
+  "date": "August 11 - August 17, 2025",
+  "whatIDid": {
+    "type": "list",
+    "items": [
+      "Facing issue with coverage in [PR #209](https://github.com/animint/animint2/pull/209): `No valid coverage data was processed Error: Process completed with exit code 1`.",
+      "Encountered issues with layout changes in [PR #153](https://github.com/animint/animint2/pull/153), where The World Bank visualization code is breaking due to those changes."
+    ]
+  },
+  "progress": {
+    "type": "list",
+    "items": [
+      "Successfully merged [PR #215](https://github.com/animint/animint2/pull/215), which added a `error_for_showSelected_variants` function to catch errors from bad geom parameters."
+    ]
   }
+},
+{
+  "title": "Week 12: Coding Period",
+  "date": "August 18 - August 24, 2025",
+  "whatIDid": {
+    "type": "list",
+    "items": [
+      "Added Shiny test coverage to [PR #209](https://github.com/animint/animint2/pull/209).",
+      "Refactored code in [PR #153](https://github.com/animint/animint2/pull/153) to handle the World Bank plot more effectively. Worked on simplifying the `current_tr` initialization for better performance.",
+      "Published a blog post to help new contributors understand the process of contributing to the project: [Blog Post](https://biplab-sutradhar.github.io/gsoc_journey/blog.html?data=blogs/blog.md&type=blog-collection&post=2)."
+    ]
+  },
+  "progress": {
+    "type": "list",
+    "items": [
+      "Successfully added Shiny test coverage as part of the work in [PR #209](https://github.com/animint/animint2/pull/209).",
+      "`theme_animint(rowspan, colspan, last_in_row)` code is now working [PR #153](https://github.com/animint/animint2/pull/153)."
+    ]
+  }
+}
 ]

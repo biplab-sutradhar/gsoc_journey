@@ -1,4 +1,3 @@
-// blog-script.js - Blog MD file functionality
 document.addEventListener('DOMContentLoaded', function() {
     const blogContainer = document.querySelector('.blog-container');
     
@@ -7,25 +6,65 @@ document.addEventListener('DOMContentLoaded', function() {
     let dataFile = urlParams.get('data');
     const postId = urlParams.get('post');
     const contentType = urlParams.get('type');
-    
-    
-    // if (dataFile === 'blogs/') {
-    //     dataFile = 'blogs/blog.md';
-    // }
-    
-    if (blogContainer && contentType === 'blog-collection' && dataFile) {
-        if (postId) {
-            loadIndividualBlogPost(dataFile, postId);
-        } else {
-            loadBlogIndex(dataFile);
+
+    if (blogContainer && dataFile) {
+        if (contentType === 'journal-md') {
+            // Handle MD journal files (like prs.md)
+            loadJournalMD(dataFile);
+        } else if (contentType === 'blog-collection') {
+            // Handle regular blog collections
+            if (postId) {
+                loadIndividualBlogPost(dataFile, postId);
+            } else {
+                loadBlogIndex(dataFile);
+            }
         }
     } else {
         console.error('Blog container not found or missing parameters');
         if (blogContainer) {
-            blogContainer.innerHTML = '<p>Invalid blog parameters.</p>';
+            blogContainer.innerHTML = '<p class="error-message">Invalid blog parameters.</p>';
         }
     }
 });
+
+async function loadJournalMD(dataFile) {
+    try {
+        const response = await fetch(dataFile);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const markdownContent = await response.text();
+        
+        // Parse the front-matter to get title, date, etc.
+        const post = parseIndividualPost(markdownContent);
+        
+        if (!post) {
+            throw new Error('Could not parse journal entry');
+        }
+        
+        const container = document.querySelector('.blog-container');
+        container.innerHTML = `
+            <div class="blog-navigation">
+                <a href="index.html" class="nav-home-btn">← Home</a>
+            </div>
+            
+            <div class="blog-post-header-single">
+                <h1>${post.metadata.title || 'Journal Entry'}</h1>
+                <div class="blog-date">${post.metadata.date || ''}</div>
+                <div class="blog-description">${post.metadata.description || ''}</div>
+            </div>
+            
+            <div class="blog-post-content-single">
+                ${parseMarkdownContent(post.content)}
+            </div>
+        `;
+        
+    } catch (error) {
+        console.error('Error loading journal MD:', error);
+        document.querySelector('.blog-container').innerHTML = '<p class="error-message">Error loading journal entry.</p>';
+    }
+}
 
 // Load blog index (list of all blog posts)
 async function loadBlogIndex(dataFile) {
