@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const postId = urlParams.get('post');
     const contentType = urlParams.get('type');
     
-    // Convert blogs/ to blogs/blog.md
-    if (dataFile === 'blogs/') {
-        dataFile = 'blogs/blog.md';
-    }
+    
+    // if (dataFile === 'blogs/') {
+    //     dataFile = 'blogs/blog.md';
+    // }
     
     if (blogContainer && contentType === 'blog-collection' && dataFile) {
         if (postId) {
@@ -271,7 +271,7 @@ function parseInlineMarkdown(text) {
     text = text.replace(/\n/g, '<br>');
 
     // Handle links - matches CSS .blog-post-content-single a styles
-    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
     
     // Handle bold - matches CSS .blog-post-content-single strong styles
     text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');

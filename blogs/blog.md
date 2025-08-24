@@ -59,123 +59,33 @@ remotes::install_deps(dependencies = TRUE)
 devtools::load_all()
 ```
 
-### Step 2: Run Tests
-
-```
-animint2:::tests_init()
-animint2:::tests_run()
-```
-
-### Step 3: Choose a Small Task
+### Step 2: Choose a Small Task
 
 Start with something manageable:
-- Fix a documentation typo
-- Port a gallery example
-- Improve a JavaScript tooltip
-- Add a simple unit test
 
-### Step 4: Make Your Changes
+* Add documentation
+* Add a simple unit test
+
+### Step 3: Make Your Changes
 
 Edit files in these directories:
-- **R code:** `R/` folder
-- **JavaScript/HTML:** `inst/htmljs/` folder
-- **Tests:** `tests/testthat/` folder
 
-### Step 5: Add Tests
+* **R code:** `R/` folder
+* **JavaScript/HTML:** `inst/htmljs/` folder
+* **Tests:** `tests/testthat/` folder
+
+### Step 4: Add Tests
 
 Write tests using `testthat`. For browser tests, use Chromote-based integration (these run on CI).
 
-### Step 6: Build and Check
+### Step 5: Build and Check
 
 ```
 R CMD build .
 R CMD check animint2_*.tar.gz
 ```
 
-### Step 7: Submit Your Contribution
-
-1. Commit your changes
-2. Push to your fork
-3. Open a pull request
-
-**Include in your PR:**
-- What you changed
-- Why it helps
-- A minimal example showing your changes
-
-## Core Development Loop
-
-Remember: **clone → run → fix → test → PR**
-
-Keep changes small and focused for easier review.
-
-## Adding a Data Visualization to the Gallery
-
-### Create Your Visualization
-
-1. **Install animint2:**
-
-```
-install.packages("animint2")
-# or development version:
-remotes::install_github("animint/animint2")
-```
-
-2. **Create your visualization:**
-
-```
-viz <- animint(
-  list_of_ggplots,
-  title = "My Visualization",
-  source = "https://link.to/your_code.R"
-)
-```
-*Note: The `source` parameter should link to your code so others can review it.*
-
-3. **Deploy your visualization:**
-
-```
-animint2pages(viz, "your_new_repo_name")
-```
-
-4. **Add a screenshot:** Place a file named `Capture.PNG` in the `gh-pages` branch of your repository.
-
-### Add to the Official Gallery
-
-1. **Fork the gallery:** Fork `animint/gallery` and ensure it has a `gh-pages` branch
-
-2. **Clone your fork:**
-
-```
-git clone git@github.com:YOUR_USERNAME/gallery ~/R/gallery
-```
-
-3. **Add your repository:** Add `YOUR_USERNAME/your_new_repo_name` to `repos.txt`
-
-4. **Update the gallery:**
-
-```
-animint2::update_gallery()
-```
-
-5. **Submit:** Push changes and open a PR from your fork's `gh-pages` to `animint/gallery` `gh-pages`. Include the preview URL.
-
-## Testing with Chromote
-
-### Requirements
-
-- Google Chrome (not Chromium)
-- Chromote package
-- RStudio 2024.04.0+735 or later
-
-### Setup
-
-```
-install.packages("chromote")
-remotes::install_github("animint/animint2@chromote-testing")
-```
-
-### Running Tests
+### Step 6: Run Tests [ref](https://github.com/animint/animint2/wiki/Testing)
 
 From `animint2/tests/testthat`:
 
@@ -189,33 +99,124 @@ source("helper-functions.R")
 source("helper-HTML.R")
 source("helper-plot-data.r")
 
+# initialize chromote + server
 tests_init()
-tests_run()
-```
 
-View test results at: `http://localhost:4848/animint-htmltest/`
+# run all tests
+tests_run()
+
+# run specific tests
+tests_run(filter="axis-rotate")
+
+# run only renderer tests
+tests_run(filter="renderer")
+```
 
 ## Test Categories
 
-- **CRAN tests:** Fast checks for CRAN compatibility
-- **Renderer tests:** DOM/SVG validation using Chromote
-- **Compiler tests:** Output validation from `animint2dir()` and `animint2pages()`
+* **CRAN tests:** Fast checks for CRAN compatibility
+* **Renderer tests:** DOM/SVG validation using Chromote
+ **Compiler tests:** Output validation from `animint2dir()` and `animint2pages()`
+
+ and You can also run a specific file with ` testthat::test_file("filename")`
+
+### Step 7: Submit Your Contribution
+
+1. Commit your changes
+2. Push to your fork
+3. Open a pull request
+
+**Include in your PR:**
+
+* What you changed
+* Why it helps
+* A minimal example showing your changes
+
+## Core Development Loop
+
+Remember: **clone → run → fix → test → PR**
+
+Keep changes small and focused for easier review.
+
+## Adding a Data Visualization to the Gallery [ref](https://github.com/animint/gallery/)
+
+### Make a Data Viz
+
+1. **Install animint2 (>= 2023.11.21):**
+
+```
+install.packages("animint2")
+# or development version:
+remotes::install_github("animint/animint2")
+```
+
+2. **Create a viz object:**
+
+```
+viz <- animint(
+  ggplots,
+  title = "data viz title",
+  source = "https://link.to/your_code.R"
+)
+```
+
+*Options:*
+
+* **title:** A short description of your viz.
+* **source:** URL linking to your code (required for gallery).
+
+3. **Deploy to GitHub Pages:**
+
+```
+animint2pages(viz, "new_github_repo")
+```
+
+This creates a GitHub repository with your viz deployed in the `gh-pages` branch.
+
+4. **Add a screenshot:** Take a screenshot of your viz, save as `Capture.PNG`, and add it to the `gh-pages` branch.
+
+### Add Your Data Viz to the Gallery
+
+1. **Fork the gallery repo:** Fork `animint/gallery` and ensure it has a `gh-pages` branch.
+
+2. **Clone your fork:**
+
+```
+git clone git@github.com:YOUR_GITHUB_USERNAME/gallery ~/R/gallery
+```
+
+3. **Add your repo:** Append `YOUR_GITHUB_USERNAME/new_github_repo` to `repos.txt` (use the same repo name from `animint2pages`).
+
+4. **Update and push:**
+
+```
+animint2::update_gallery()
+```
+
+5. **Preview & PR:** After a few minutes, your gallery will be visible at:
+
+```
+https://YOUR_GITHUB_USERNAME.github.io/gallery/
+```
+
+Then open a pull request from your fork's `gh-pages` branch to `animint/gallery:gh-pages`. Include the preview URL in your PR description so reviewers can see the rendered gallery.
+
 
 ## Tips for Success
 
-- **Keep PRs small:** Small, focused changes are easier to review
-- **Provide examples:** Include reproducible examples in your PR
-- **Use live previews:** Deploy with `animint2pages()` and GitHub Pages to show your work
-- **Write tests:** Use existing helper functions in `tests/testthat/helper-*.R`
-- **Check coverage:** Use Codecov reports to identify areas needing tests
+* **Keep PRs small:** Small, focused changes are easier to review
+* **Provide examples:** Include reproducible examples in your PR
+* **Use live previews:** Deploy with `animint2pages()` and GitHub Pages to show your work
+* **Write tests:** Use existing helper functions in `tests/testthat/helper-*.R`
+* **Check coverage:** Use Codecov reports to identify areas needing tests
 
 ## Getting Help
 
-- Browse existing issues on GitHub
-- Check the gallery for examples
-- Review helper functions in the test suite
-- Start with documentation improvements if you're new to the codebase
+* Browse existing issues on GitHub
+* Check the gallery for examples
+* Review helper functions in the test suite
+* Start with documentation improvements if you're new to the codebase
 
-Happy contributing! 🎉
+### Happy contributing! 🎉
 "
 ---
