@@ -1,5 +1,13 @@
 [
+  
+  
   {
+    "id": "GSoC 2025 Report", 
+    "title": "Final GSoC 2025 Report",
+    "description": "Final GSoC 2025 Report: Enhancing Animint2 and Gallery Visualizations",
+    "file": "blogs/works.md",
+    "type": "blog-collection"
+  },{
     "id": "blog",
     "title": "Blog",
     "description": "Technical blog posts about my development work and experiences.",
