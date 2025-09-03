@@ -1,4 +1,6 @@
+
 ---
+
 id: 1
 title: "Final GSoC 2025 Report: Enhancing Animint2 and Gallery Visualizations"
 date: September 3, 2025
