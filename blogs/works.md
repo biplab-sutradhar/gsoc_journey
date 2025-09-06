@@ -13,7 +13,7 @@ contents: "
 **Project:** animint2 – Interactive Web-based Visualizations in R  
 **Student:** Biplab Sutradhar  
 **Mentor:** Toby Dylan Hocking  
-**Organization:** Animint2  
+**Organization:**  R Organization
 **Duration:** May – September 2025  
 
 
